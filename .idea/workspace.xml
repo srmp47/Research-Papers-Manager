@@ -4,15 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="56555679-019b-433f-a006-5fe0d05a6d92" name="Changes" comment="Create project">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="56555679-019b-433f-a006-5fe0d05a6d92" name="Changes" comment="Add django to project and write first API">
+      <change afterPath="$PROJECT_DIR$/Database/mongoDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/app/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/app/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/app/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/app/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/app/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/app/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/app/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/config/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -29,11 +44,17 @@
     &quot;accountId&quot;: &quot;85fa109c-78ba-48e6-8346-641df6305376&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="2zVUfQ8TrvmjAm8owl1hJS99S09" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -74,11 +95,20 @@
       <option name="project" value="LOCAL" />
       <updated>1751815898942</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add django to project and write first API">
+      <option name="closed" value="true" />
+      <created>1751911005935</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1751911005935</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Create project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create project" />
+    <MESSAGE value="Add django to project and write first API" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add django to project and write first API" />
   </component>
 </project>
