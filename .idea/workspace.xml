@@ -4,18 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="56555679-019b-433f-a006-5fe0d05a6d92" name="Changes" comment="Add django to project and write first API">
-      <change afterPath="$PROJECT_DIR$/Database/mongoDB.py" afterDir="false" />
+    <list default="true" id="56555679-019b-433f-a006-5fe0d05a6d92" name="Changes" comment="Change structure">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/app/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/app/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/app/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/app/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/app/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/app/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/app/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/mongoDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Database/mongoDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/proj/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/proj/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/manage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,12 +98,21 @@
       <option name="project" value="LOCAL" />
       <updated>1751911005935</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Change structure">
+      <option name="closed" value="true" />
+      <created>1751993464357</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1751993464357</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Create project" />
     <MESSAGE value="Add django to project and write first API" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add django to project and write first API" />
+    <MESSAGE value="Change structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change structure" />
   </component>
 </project>
