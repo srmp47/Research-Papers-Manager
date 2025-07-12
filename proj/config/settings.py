@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
+    'users.apps.UsersConfig', # to create unique index for username in Users collection
+    'papers.apps.PapersConfig', # to create unique index for title, abstract and keywords in Users collection
 ]
 
 MIDDLEWARE = [

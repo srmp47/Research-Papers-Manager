@@ -41,33 +41,62 @@ def signup(request):
     password = data.get("password")
     department = data.get("department")
 
-    if not validate_username(username):
+    if username is not None and not validate_username(username):
         return JsonResponse({"error": "Invalid username"}, status=400)
-    if not validate_email(email):
+    if email is not None and not validate_email(email):
         return JsonResponse({"error": "Invalid email"}, status=400)
-    if not validate_name(name):
+    if name is not None and not validate_name(name):
         return JsonResponse({"error": "Invalid name"}, status=400)
-    if not validate_department(department):
+    if department is not None and not validate_department(department):
         return JsonResponse({"error": "Invalid department"}, status=400)
 
+    # TODO implement password validation If needed
 
-
-     # TODO implement password validation If needed
-
-    # TODO: remove this if needed
-    #if not all([username, name, email, password, department]):
-    #    return JsonResponse({"error": "All fields are required"}, status=400)
-
-    if is_there_user_with_username(username):
+    if username is not None and is_there_user_with_username(username):
         return JsonResponse({"error": "Username already taken"}, status=409)
 
     users_col = get_users_collection()
-    user_doc = {
-        "username": username,
-        "name": name,
-        "email": email,
-        "password": password,  # Note: should hash in production
-        "department": department
-    }
+    user_doc = {}
+    if username is not None:
+        user_doc["username"] = username
+    if name is not None:
+        user_doc["name"] = name
+    if email is not None:
+        user_doc["email"] = email
+    if password is not None:
+        user_doc["password"] = password 
+    if department is not None:
+        user_doc["department"] = department
+
     result = users_col.insert_one(user_doc)
     return JsonResponse({"message": "User registered", "user_id": str(result.inserted_id)}, status=201)
+
+@csrf_exempt
+def login(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+    try:
+        data = json.loads(request.body)
+    except Exception:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    username = data.get("username")
+    password = data.get("password")
+    if username is None or password is None:
+        return JsonResponse({"error": "Username and password are required"}, status=400)
+
+    if not is_there_user_with_username(username):
+        return JsonResponse({"error": "User not found"}, status=404)
+    users_col = get_users_collection()
+
+    user_doc = users_col.find_one({"username": username})
+    if user_doc["password"] != password:
+        return JsonResponse({"error": "Invalid password"}, status=401)
+    
+
+    users_col = get_users_collection()
+
+    user_doc = users_col.find_one({"username": username}) 
+
+    return JsonResponse({"message": "Login successful"}, status=200)
+    
