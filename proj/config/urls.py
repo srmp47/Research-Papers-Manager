@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from users.views import  signup,login
-from papers.views import upload_paper
+from papers.views import upload_paper , get_papers , get_paper_details
 
 
 
@@ -25,5 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup',signup),
     path('login',login),
-    path('papers',upload_paper)
+    path('papers',upload_paper),
+    path('get_papers',get_papers),
+    path('get_papers/<str:paper_id>/', get_paper_details, name='get_paper_by_id'),
 ]

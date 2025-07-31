@@ -1,9 +1,8 @@
 import json
-from os import MFD_ALLOW_SEALING
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from Database.mongoDB import get_users_collection, get_papers_collection, is_there_user_with_username
+from Database.mongoDB import get_users_collection, get_papers_collection, is_there_user_with_id , is_there_paper_with_paper_id , get_citations_collection
 from bson import ObjectId
 from datetime import datetime
 
@@ -52,24 +51,32 @@ def validate_keywords(keywords):
 
 
 def validate_citations(citations):
-    pass
+    for paper_id in citations:
+        try:
+            paper_id_object = ObjectId(paper_id)
+            if not is_there_paper_with_paper_id(paper_id_object):
+                return False
+        except:
+            return False
+    return True
 
 
 @csrf_exempt
 def upload_paper(request):
     if request.method != "POST":
         return JsonResponse({"error": "Method not allowed"}, status=405)
-
     user_id = request.headers.get("X-User-ID")
     if not user_id:
         return JsonResponse({"error": "Missing X-User-ID header"}, status=401)
+
+
 
     users_col = get_users_collection()
     try:
         user_obj_id = ObjectId(user_id)
     except Exception:
         return JsonResponse({"error": "Invalid user ID format"}, status=401)
-    if not is_there_user_with_username(user_id):
+    if not is_there_user_with_id(user_obj_id):
         return JsonResponse({"error": "Invalid user ID"}, status=401)
 
     try:
@@ -101,11 +108,11 @@ def upload_paper(request):
         return JsonResponse({"error": "Invalid or missing journal_conference"}, status=400)
     if keywords is not None and not validate_keywords(keywords):
         return JsonResponse({"error": "Invalid or missing keywords"}, status=400)
-   # TODO handle this:
-   # if citations is not None and not validate_citations(citations):
-   #     return JsonResponse({"error": "Invalid citations"}, status=400)
+    if citations is not None and  not validate_citations(citations):
+        return JsonResponse({"error": f"Invalid citations: {citations}"}, status=400)
 
     papers_col = get_papers_collection()
+    citations_col = get_citations_collection()
     for cited_id in citations:
         try:
             cited_obj_id = ObjectId(cited_id)
@@ -116,7 +123,7 @@ def upload_paper(request):
     
     paper_doc = {
         "title": title,
-        "authors": authors,
+        "authors": authors ,
         "abstract": abstract,
         "publication_date": publication_date,
         "journal_conference": journal_conference,
@@ -126,4 +133,91 @@ def upload_paper(request):
         "views": 0
     }
     result = papers_col.insert_one(paper_doc)
+    for cited_id in citations:
+        cited_id = ObjectId(cited_id)
+        paper_id = ObjectId(result.inserted_id)
+        citation_doc = {
+            "paper_id" : paper_id ,
+            "cited_paper_id" : cited_id
+        }
+        citations_col.insert_one(citation_doc)
+
+
     return JsonResponse({"message": "Paper uploaded", "paper_id": str(result.inserted_id)}, status=201)
+
+
+@csrf_exempt
+def get_papers(request):
+    if request.method != "GET":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+    papers_col = get_papers_collection()
+    search = request.GET.get("search")
+    sort_by = request.GET.get("sorted_by")
+    order = request.GET.get("order")
+    query = {}
+    if search:
+        query["$or"] = [
+            {"title": {"$regex": search, "$options": "i"}},
+            {"abstract": {"$regex": search, "$options": "i"}}
+        ]
+    if sort_by is not None and sort_by not in ["publication_date", "relevance"]:
+        return JsonResponse({"error": "Invalid value for sort_by"}, status=400)
+
+    if order is not None and order not in ["asc", "desc"]:
+        return JsonResponse({"error": "Invalid value for order"}, status=400)
+    sort_direction = 1 if order == "asc" else -1
+    sort_field = "views" if sort_by == "relevance" else "publication_date"
+
+    papers_cursor = papers_col.find(query).sort(sort_field, sort_direction)
+    papers_list = []
+    for paper in papers_cursor:
+        citation_count = len(paper.get("citations"))
+
+        papers_list.append({
+            "id": str(paper["_id"]),
+            "title": paper.get("title", ""),
+            "authors": paper.get("authors", []),
+            "abstract": paper.get("abstract", ""),
+            "publication_date": paper.get("publication_date", ""),
+            "journal_conference": paper.get("journal_conference", ""),
+            "keywords": paper.get("keywords", []),
+            "citation_count": citation_count,
+            "views": paper.get("views", 0)
+        })
+
+    return JsonResponse({"papers": papers_list}, status=200)
+
+
+@csrf_exempt
+def get_paper_details(request, paper_id):
+    if request.method != "GET":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    papers_col = get_papers_collection()
+
+    try:
+        paper_obj_id = ObjectId(paper_id)
+    except Exception:
+        return JsonResponse({"error": "Invalid paper ID format"}, status=404)
+
+    paper = papers_col.find_one({"_id": paper_obj_id})
+    if not paper:
+        return JsonResponse({"error": "Paper not found"}, status=404)
+
+    citation_count = len(paper.get("citations", []))
+
+    response_data = {
+        "id": str(paper["_id"]),
+        "title": paper.get("title", ""),
+        "authors": paper.get("authors", []),
+        "abstract": paper.get("abstract", ""),
+        "publication_date": paper.get("publication_date", ""),
+        "journal_conference": paper.get("journal_conference", ""),
+        "keywords": paper.get("keywords", []),
+        "citation_count": citation_count,
+        "views": paper.get("views", 0)
+    }
+
+    return JsonResponse(response_data, status=200)
+
+

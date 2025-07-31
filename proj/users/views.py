@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 import json
 from django.http import JsonResponse
-from Database.mongoDB import is_there_user_with_username, get_users_collection
+from Database.mongoDB import is_there_user_with_username, get_users_collection , get_user_with_username
 
 import re
 
@@ -83,20 +83,17 @@ def login(request):
     username = data.get("username")
     password = data.get("password")
     if username is None or password is None:
-        return JsonResponse({"error": "Username and password are required"}, status=400)
+        return JsonResponse({"error": "Username and password both are required"}, status=400)
 
     if not is_there_user_with_username(username):
         return JsonResponse({"error": "User not found"}, status=404)
     users_col = get_users_collection()
 
-    user_doc = users_col.find_one({"username": username})
+    user_doc = get_user_with_username(username)
     if user_doc["password"] != password:
         return JsonResponse({"error": "Invalid password"}, status=401)
     
 
-    users_col = get_users_collection()
-
-    user_doc = users_col.find_one({"username": username}) 
 
     return JsonResponse({"message": "Login successful"}, status=200)
     

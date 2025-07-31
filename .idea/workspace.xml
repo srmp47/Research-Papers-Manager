@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="56555679-019b-433f-a006-5fe0d05a6d92" name="Changes" comment="Add signup endpoint">
+    <list default="true" id="56555679-019b-433f-a006-5fe0d05a6d92" name="Changes" comment="Add login and uploading papers endpoints">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Database/mongoDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Database/mongoDB.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/citations/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/citations/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj/citations/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/citations/apps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/proj/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/config/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/papers/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/papers/apps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/proj/papers/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/papers/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proj/users/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/users/apps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/proj/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/proj/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +114,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752148457046</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add login and uploading papers endpoints">
+      <option name="closed" value="true" />
+      <created>1752345783040</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1752345783040</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -125,6 +130,7 @@
     <MESSAGE value="Add django to project and write first API" />
     <MESSAGE value="Change structure" />
     <MESSAGE value="Add signup endpoint" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add signup endpoint" />
+    <MESSAGE value="Add login and uploading papers endpoints" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add login and uploading papers endpoints" />
   </component>
 </project>
