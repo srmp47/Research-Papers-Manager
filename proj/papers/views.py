@@ -2,7 +2,10 @@ import json
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from Database.mongoDB import get_users_collection, get_papers_collection, is_there_user_with_id , is_there_paper_with_paper_id , get_citations_collection
+from Database.mongoDB import get_users_collection, get_papers_collection, is_there_user_with_id , is_there_username
+from Database.mongoDB import is_there_paper_with_paper_id , get_citations_collection , is_there_search_result
+from Database.mongoDB import get_views_of_paper , increase_views_of_paper
+from Database.mongoDB import get_search_result, save_search_result
 from bson import ObjectId
 from datetime import datetime
 
@@ -16,6 +19,7 @@ def validate_authors(authors):
     if (not isinstance(authors, list) or
         not all(isinstance(a, str) for a in authors) or
         not all(len(a) <= 100 for a in authors) or
+        not all(is_there_user_with_id(ObjectId(a)) for a in authors) or
         len(authors) > 5 or
         not authors):
         return False
@@ -28,9 +32,15 @@ def validate_abstract(abstract):
     return True
 
 def validate_publication_date(publication_date):
-    if not isinstance(publication_date, str) or not publication_date or not datetime.fromisoformat(publication_date):
+    if not isinstance(publication_date, str) or not publication_date:
         return False
-    return True
+    try:
+        datetime.fromisoformat(publication_date)
+        return True
+    except ValueError:
+        return False
+
+
 
 def validate_journal_conference(journal_conference):
     if not isinstance(journal_conference, str) or not journal_conference or len(journal_conference) > 200:
@@ -71,7 +81,6 @@ def upload_paper(request):
 
 
 
-    users_col = get_users_collection()
     try:
         user_obj_id = ObjectId(user_id)
     except Exception:
@@ -113,13 +122,7 @@ def upload_paper(request):
 
     papers_col = get_papers_collection()
     citations_col = get_citations_collection()
-    for cited_id in citations:
-        try:
-            cited_obj_id = ObjectId(cited_id)
-        except Exception:
-            return JsonResponse({"error": f"Invalid citation ID format: {cited_id}"}, status=404)
-        if not papers_col.find_one({"_id": cited_obj_id}):
-            return JsonResponse({"error": f"Citation not found: {cited_id}"}, status=404)
+
     
     paper_doc = {
         "title": title,
@@ -154,6 +157,10 @@ def get_papers(request):
     search = request.GET.get("search")
     sort_by = request.GET.get("sorted_by")
     order = request.GET.get("order")
+    search_arguments = f"{search}:{sort_by}:{order}"
+    if is_there_search_result(search_arguments):
+        papers_list = get_search_result(search_arguments)
+        return JsonResponse({"papers": papers_list}, status=200)
     query = {}
     if search:
         query["$or"] = [
@@ -172,9 +179,9 @@ def get_papers(request):
     papers_list = []
     for paper in papers_cursor:
         citation_count = len(paper.get("citations"))
-
+        paper_id = str(paper["_id"])
         papers_list.append({
-            "id": str(paper["_id"]),
+            "id": paper_id,
             "title": paper.get("title", ""),
             "authors": paper.get("authors", []),
             "abstract": paper.get("abstract", ""),
@@ -182,10 +189,12 @@ def get_papers(request):
             "journal_conference": paper.get("journal_conference", ""),
             "keywords": paper.get("keywords", []),
             "citation_count": citation_count,
-            "views": paper.get("views", 0)
+            "views": paper.get("views",0)
         })
 
+    save_search_result(search_arguments,papers_list)
     return JsonResponse({"papers": papers_list}, status=200)
+
 
 
 @csrf_exempt
@@ -205,9 +214,9 @@ def get_paper_details(request, paper_id):
         return JsonResponse({"error": "Paper not found"}, status=404)
 
     citation_count = len(paper.get("citations", []))
-
+    paper_id = str(paper["_id"])
     response_data = {
-        "id": str(paper["_id"]),
+        "id": paper_id,
         "title": paper.get("title", ""),
         "authors": paper.get("authors", []),
         "abstract": paper.get("abstract", ""),
@@ -215,8 +224,11 @@ def get_paper_details(request, paper_id):
         "journal_conference": paper.get("journal_conference", ""),
         "keywords": paper.get("keywords", []),
         "citation_count": citation_count,
-        "views": paper.get("views", 0)
+        "views": paper.get("views",0)
     }
+    increase_views_of_paper(paper_id)
+
+
 
     return JsonResponse(response_data, status=200)
 

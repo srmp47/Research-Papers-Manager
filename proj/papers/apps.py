@@ -1,6 +1,5 @@
 from django.apps import AppConfig
-
-
+from proj.papers.scheduler import start_scheduler
 class PapersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'papers'
@@ -12,3 +11,4 @@ class PapersConfig(AppConfig):
             ("abstract", 1),
             ("keywords", 1)
         ])
+        start_scheduler()
