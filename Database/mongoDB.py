@@ -22,9 +22,7 @@ def get_db():
 def get_users_collection():
     return get_db()["Users"]
 
-#def is_there_user_with_username(username):
-#    users_col = get_users_collection()
-#    return users_col.find_one({"username": username}) is not None
+
 
 def is_there_user_with_id(user_id):
     users_col = get_users_collection()

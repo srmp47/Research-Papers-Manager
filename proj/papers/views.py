@@ -179,13 +179,15 @@ def get_papers(request):
     papers_list = []
     for paper in papers_cursor:
         citation_count = len(paper.get("citations"))
+        publication_date = paper.get("publication_date")
+        publication_date = publication_date.isoformat()
         paper_id = str(paper["_id"])
         papers_list.append({
             "id": paper_id,
             "title": paper.get("title", ""),
             "authors": paper.get("authors", []),
             "abstract": paper.get("abstract", ""),
-            "publication_date": paper.get("publication_date", ""),
+            "publication_date": publication_date,
             "journal_conference": paper.get("journal_conference", ""),
             "keywords": paper.get("keywords", []),
             "citation_count": citation_count,

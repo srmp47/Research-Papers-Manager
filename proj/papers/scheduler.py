@@ -6,7 +6,7 @@ def start_scheduler():
     scheduler.add_job(
         transfer_views_to_mongodb,
         'interval',
-        minutes=0.5,
+        minutes=10,
         id='transfer_views_job'
     )
     scheduler.start()
